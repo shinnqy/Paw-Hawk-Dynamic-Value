@@ -11,10 +11,16 @@ var PawHawkDynamicValue = function () {
             throw new Error('The algorithm must be either `sha1` or `sha256`');
         }
 
-        var payload = this.payload || '';
+        var currentRequest = context.getCurrentRequest();
+
+        var payload = '';
         var contentType = 'text/plain';
+
+        if (currentRequest.body) {
+            payload = currentRequest.body;
+        }
         if (payload) {
-            contentType = 'application/json;charset=UTF-8';
+            contentType = currentRequest.headers['Content-Type'];
         }
 
         var options = {
@@ -28,8 +34,6 @@ var PawHawkDynamicValue = function () {
         };
         console.log('payload', options.payload);
         console.log('contentType', options.contentType);
-
-        var currentRequest = context.getCurrentRequest();
 
         var header = Hawk.client.header(
             currentRequest.url,
@@ -67,14 +71,14 @@ PawHawkDynamicValue.inputs = [
         },
         defaultValue: "sha256"
     }),
-    InputField("payload", "Payload", "String", {
-        placeholder: "payload",
-        defaultValue: ''
-    }),
-    InputField("contentType", "ContentType", "String", {
-        placeholder: "content type",
-        defaultValue: 'text/plain'
-    }),
+    // InputField("payload", "Payload", "String", {
+    //     placeholder: "payload",
+    //     defaultValue: ''
+    // }),
+    // InputField("contentType", "ContentType", "String", {
+    //     placeholder: "content type",
+    //     defaultValue: 'text/plain'
+    // }),
 ];
 
 registerDynamicValueClass(PawHawkDynamicValue);
