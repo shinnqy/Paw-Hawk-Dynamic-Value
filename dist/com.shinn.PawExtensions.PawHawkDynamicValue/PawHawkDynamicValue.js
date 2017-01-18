@@ -58,17 +58,23 @@
 	            throw new Error('The algorithm must be either `sha1` or `sha256`');
 	        }
 
+	        var payload = this.payload || '';
+	        var contentType = 'text/plain';
+	        if (payload) {
+	            contentType = 'application/json';
+	        }
+
 	        var options = {
 	            credentials: {
 	                id: this.id || '',
 	                key: this.key,
 	                algorithm: this.algorithm
 	            },
-	            payload: this.payload || '',
-	            contentType: this.contentType || 'text/plain'
+	            payload: payload,
+	            contentType: contentType
 	        };
-	        console.log(this.payload);
-	        console.log(this.contentType);
+	        console.log('payload', options.payload);
+	        console.log('contentType', options.contentType);
 
 	        var currentRequest = context.getCurrentRequest();
 
@@ -78,18 +84,18 @@
 	    };
 
 	    this.title = function (context) {
-	        return "Hawk auth";
+	        return "Hawk";
 	    };
 
-	    this.text = function (context) {
-	        return 'Paw Hawk Dynamic Value';
-	    };
+	    // this.text = function (context) {
+	    //     return 'Paw Hawk Dynamic Value';
+	    // };
 
 	    return this;
 	};
 
 	PawHawkDynamicValue.identifier = 'com.shinn.PawExtensions.PawHawkDynamicValue';
-	PawHawkDynamicValue.title = 'Hawk Auth';
+	PawHawkDynamicValue.title = 'Hawk';
 	PawHawkDynamicValue.inputs = [InputField("id", "ID", "String", {
 	    placeholder: "Hawk key identifier"
 	}), InputField("key", "Key", "String", {

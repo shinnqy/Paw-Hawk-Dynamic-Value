@@ -1,9 +1,9 @@
 'use strict';
 
 // const Hawk = require('hawk/lib/browser');
-const Hawk = require('./hawk');
+var Hawk = require('./hawk');
 
-let PawHawkDynamicValue = function () {
+var PawHawkDynamicValue = function () {
 
     this.evaluate = function (context) {
 
@@ -11,21 +11,27 @@ let PawHawkDynamicValue = function () {
             throw new Error('The algorithm must be either `sha1` or `sha256`');
         }
 
-        let options = {
+        var payload = this.payload || '';
+        var contentType = 'text/plain';
+        if (payload) {
+            contentType = 'application/json;charset=UTF-8';
+        }
+
+        var options = {
             credentials: {
                 id: this.id || '',
                 key: this.key,
                 algorithm: this.algorithm
             },
-            payload: this.payload || '',
-            contentType: this.contentType || 'text/plain'
+            payload: payload,
+            contentType: contentType
         };
-        console.log(this.payload);
-        console.log(this.contentType);
+        console.log('payload', options.payload);
+        console.log('contentType', options.contentType);
 
-        let currentRequest = context.getCurrentRequest();
+        var currentRequest = context.getCurrentRequest();
 
-        let header = Hawk.client.header(
+        var header = Hawk.client.header(
             currentRequest.url,
             currentRequest.method,
             options
@@ -35,18 +41,18 @@ let PawHawkDynamicValue = function () {
     };
 
     this.title = function(context) {
-        return "Hawk auth";
+        return "Hawk";
     };
 
-    this.text = function (context) {
-        return 'Paw Hawk Dynamic Value';
-    };
+    // this.text = function (context) {
+    //     return 'Paw Hawk Dynamic Value';
+    // };
 
     return this;
 };
 
 PawHawkDynamicValue.identifier = 'com.shinn.PawExtensions.PawHawkDynamicValue';
-PawHawkDynamicValue.title = 'Hawk Auth';
+PawHawkDynamicValue.title = 'Hawk';
 PawHawkDynamicValue.inputs = [
     InputField("id", "ID", "String", {
         placeholder: "Hawk key identifier"
