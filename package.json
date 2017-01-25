@@ -1,6 +1,6 @@
 {
-  "name": "paw-haw-dynamic-value",
-  "version": "1.0.0",
+  "name": "paw-hawk-dynamic-value",
+  "version": "1.0.1",
   "description": "",
   "main": "PawHawkDynamicValue.js",
   "scripts": {
